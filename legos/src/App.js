@@ -1,10 +1,10 @@
-// import logo from './logo.svg';
+import logo from './legos.png';
 import './App.css';
 import Compiler from './pages/compiler';
 
 function App() {
   return (
-    <Compiler />
+    <Compiler logo={logo} />
   );
 }
 
