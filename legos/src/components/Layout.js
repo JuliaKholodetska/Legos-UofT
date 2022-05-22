@@ -35,15 +35,16 @@ const Layout = ({
                                 marginTop="40px"
                                 marginBottom="32px"
                                 fontSize="1.5rem"
-                                as="h2">
-                                Automatically check your code
+                                as="h2"
+                                textStyle="body">
+                                Automatically check
                             </Heading>
                             {/* can be come elements here */}
                         </Flex>
                         {children?.content ? children.content : children}
                     </Flex>
                 </Box>
-            </Flex>
+            </Flex >
             <Footer />
         </>
     );

@@ -5,11 +5,13 @@ const dynamicImports = {
     Header: dynamic(() => import('./Header')),
     Layout: dynamic(() => import('./Layout')),
     Card: dynamic(() => import('./Card')),
+    Editors: dynamic(()=> import('./Editors'))
 };
 
 export const {
     Footer,
     Header,
     Layout,
-    Card
+    Card,
+    Editors
 } = dynamicImports;

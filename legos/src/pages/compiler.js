@@ -1,11 +1,10 @@
-import { Text } from '@chakra-ui/react';
-import { Card, Layout } from '../components/ComponentMap';
+import { Card, Editors, Layout } from '../components/ComponentMap';
 
-function Compiler({ logo }) {
+function Compiler() {
     return (
         <Layout>
             <Card>
-                <Text h={1000} color="primary.main" size='m'>Ace editors</Text>
+                <Editors></Editors>
             </Card>
         </Layout>
     );
