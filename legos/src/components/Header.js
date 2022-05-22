@@ -1,12 +1,7 @@
 import React from 'react';
 import { Link, Flex, Image, Spacer } from '@chakra-ui/react';
 
-// import siteSettings from 'src/config/siteSettings';
-// import header from './componentsStyle/header';
 const legosIcon = '/public/legos.png'
-// const {
-//     images: { legosIcon },
-// } = siteSettings;
 
 const Header = ({ logo }) => {
 
