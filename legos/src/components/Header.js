@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, Flex, Image, Spacer } from '@chakra-ui/react';
 
-const legosIcon = '/public/legos.png'
+import legosIcon from './../legos.png'
 
-const Header = ({ logo }) => {
+const Header = () => {
 
     return (
         <>
@@ -11,7 +11,7 @@ const Header = ({ logo }) => {
                 p={{ base: 'layout.base', xl: 'layout.xl' }}>
                 <Spacer />
                 <Link>
-                    <Image src={logo} w={71} h={12} alt="Logo" mr={0} />
+                    <Image src={legosIcon} w={71} h={12} alt="Logo" mr={0} />
                 </Link>
             </Flex>
         </>

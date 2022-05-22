@@ -3,7 +3,7 @@ import { Card, Layout } from '../components/ComponentMap';
 
 function Compiler({ logo }) {
     return (
-        <Layout logo={logo}>
+        <Layout>
             <Card>
                 <Text h={1000} color="primary.main" size='m'>Ace editors</Text>
             </Card>

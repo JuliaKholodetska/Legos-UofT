@@ -11,12 +11,11 @@ import { Footer, Header } from './ComponentMap';
  **/
 
 const Layout = ({
-    children,
-    logo
+    children
 }) => {
     return (
         <>
-            <Header logo={logo}>
+            <Header>
                 <Divider size="md" />
             </Header>
             <Flex
@@ -37,7 +36,7 @@ const Layout = ({
                                 marginBottom="32px"
                                 fontSize="1.5rem"
                                 as="h2">
-                                Compiler
+                                Automatically check your code
                             </Heading>
                             {/* can be come elements here */}
                         </Flex>
@@ -45,8 +44,7 @@ const Layout = ({
                     </Flex>
                 </Box>
             </Flex>
-            {<Footer />}
-
+            <Footer />
         </>
     );
 };

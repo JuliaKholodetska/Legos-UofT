@@ -7,8 +7,6 @@ import theme from './theme/theme';
 import Fonts from './theme/base/Fonts';
 import { ChakraProvider } from '@chakra-ui/react';
 
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<>
   <Fonts></Fonts>
