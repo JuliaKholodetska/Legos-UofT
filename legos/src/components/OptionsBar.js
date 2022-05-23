@@ -7,7 +7,7 @@ function OptionsBar({ setSendValues, sendValues, sendRequest, invalidInput }) {
 
     return (
         <Center mt={50} h={60}>
-            <Stack spacing={24} direction='row'>
+            <Stack spacing={16} direction='row'>
                 <Text ml={30} mt="12px" fontSize="md" fontWeight="bold">Options:</Text>
                 <RadioOption text='optional' setSendValues={setSendValues} sendValues={sendValues} />
                 <RadioOption text='versionBeta' setSendValues={setSendValues} sendValues={sendValues} />

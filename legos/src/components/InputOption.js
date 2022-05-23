@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, HStack, NumberInput, NumberInputField, NumberIncrementStepper, NumberInputStepper, NumberDecrementStepper } from '@chakra-ui/react';
+import { Text, HStack, NumberInput, NumberInputField, NumberIncrementStepper, NumberInputStepper, NumberDecrementStepper, Box } from '@chakra-ui/react';
+import { Notification } from './ComponentMap';
 
 function InputOption({ text, setSendValues, sendValues, invalidInput }) {
 
-    return (
+    return (<Box >
         <HStack spacing='24px' ml={100}>
             <Text fontSize='md'>{text}</Text>
             <NumberInput
@@ -22,6 +23,8 @@ function InputOption({ text, setSendValues, sendValues, invalidInput }) {
                 </NumberInputStepper>
             </NumberInput>
         </HStack >
+        {invalidInput ? <Notification infoText="Volume should be less then 50" /> : null}
+    </Box>
     );
 }
 
