@@ -1,10 +1,11 @@
 import { Card, Editors, Layout } from '../components/ComponentMap';
+import { Box } from '@chakra-ui/react';
 
 function Compiler() {
     return (
         <Layout>
             <Card>
-                <Editors></Editors>
+                <Editors />
             </Card>
         </Layout>
     );

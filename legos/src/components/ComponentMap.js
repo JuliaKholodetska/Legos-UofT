@@ -5,7 +5,10 @@ const dynamicImports = {
     Header: dynamic(() => import('./Header')),
     Layout: dynamic(() => import('./Layout')),
     Card: dynamic(() => import('./Card')),
-    Editors: dynamic(()=> import('./Editors'))
+    Editors: dynamic(() => import('./Editors')),
+    OptionsBar: dynamic(() => import('./OptionsBar')),
+    RadioOption: dynamic(() => import('./RadioOption')),
+    InputOption: dynamic(() => import('./InputOption')),
 };
 
 export const {
@@ -13,5 +16,8 @@ export const {
     Header,
     Layout,
     Card,
-    Editors
+    Editors,
+    OptionsBar,
+    RadioOption,
+    InputOption
 } = dynamicImports;

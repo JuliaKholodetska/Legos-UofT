@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Heading, Flex, Divider } from '@chakra-ui/react';
+import { Box, Heading, Flex, Divider, } from '@chakra-ui/react';
 import { Footer, Header } from './ComponentMap';
 
 /**
