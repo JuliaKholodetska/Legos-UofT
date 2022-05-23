@@ -3,6 +3,7 @@ import { RadioOption, InputOption } from './ComponentMap';
 
 
 function OptionsBar() {
+
     return (
         <Center mt={50} h={60}>
             <Stack spacing={40} direction='row'>
