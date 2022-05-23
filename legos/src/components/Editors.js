@@ -17,6 +17,7 @@ function Editors() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [resValue, setResValue] = useState([]);
+    const invalidInput = sendValues.volume < 0 || sendValues.volume >= 50
 
     const sendRequest = () => {
         const requestOptions = {
@@ -59,7 +60,7 @@ function Editors() {
                         defaultValue="print(type(3))"
                     /></GridItem>
             </Grid>
-            <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} />
+            <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} />
         </Box>
     );
 }

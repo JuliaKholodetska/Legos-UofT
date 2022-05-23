@@ -1,8 +1,7 @@
 import React from 'react';
 import { Text, HStack, NumberInput, NumberInputField, NumberIncrementStepper, NumberInputStepper, NumberDecrementStepper } from '@chakra-ui/react';
 
-function InputOption({ text, setSendValues, sendValues }) {
-    const invalidInput = sendValues.volume < 0 || sendValues.volume >= 50
+function InputOption({ text, setSendValues, sendValues, invalidInput }) {
 
     return (
         <HStack spacing='24px' ml={100}>
@@ -14,8 +13,6 @@ function InputOption({ text, setSendValues, sendValues }) {
                 height="25px"
                 width="100px"
                 isInvalid={invalidInput}
-                keepWithinRange={false}
-                clampValueOnBlur={false}
                 onChange={(value) => setSendValues({ ...sendValues, volume: value })}
                 size='sm'>
                 <NumberInputField />
