@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Heading, Flex, Divider, } from '@chakra-ui/react';
+
 import { Footer, Header } from './ComponentMap';
 
 /**
@@ -31,14 +32,14 @@ const Layout = ({
                         pl={15}
                         pr={15}>
                         <Flex alignItems="center">
-                            <Heading
+                            {/* <Heading
                                 marginTop="40px"
                                 marginBottom="32px"
                                 fontSize="1.5rem"
                                 as="h2"
                                 textStyle="body">
                                 Automatically check
-                            </Heading>
+                            </Heading> */}
                             {/* can be come elements here */}
                         </Flex>
                         {children?.content ? children.content : children}

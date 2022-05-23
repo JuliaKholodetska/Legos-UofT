@@ -16,6 +16,8 @@ const Card = ({ children, dataTestId = '' }) => {
     return (
         <Box
             marginY={5}
+            ml={20}
+            mr={20}
             backgroundColor="background.main.white"
             boxShadow="main"
             data-testid={dataTestId}>

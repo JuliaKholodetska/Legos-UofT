@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
-import { Text, Flex, Checkbox } from '@chakra-ui/react';
+import React from 'react';
+import { Flex, Checkbox } from '@chakra-ui/react';
 
 
-function RadioOption({ text }) {
-    const [radioValue, setRadioValue] = useState(false)
+function RadioOption({ text, setSendValues, sendValues }) {
+    const defineObject = (text, e) => {
+        if (text === 'optional') {
+            return { ...sendValues, optional: e.target.checked }
+        }
+        if (text === 'versionBeta') {
+            return { ...sendValues, versionBeta: e.target.checked }
+        }
+    };
 
     return (
         <Flex>
-            <Checkbox onChange={(e) => setRadioValue(e.target.checked)}>{text}</Checkbox>
+            <Checkbox onChange={(e) => setSendValues(defineObject(text, e))}>{text}</Checkbox>
         </Flex >
     );
 }
