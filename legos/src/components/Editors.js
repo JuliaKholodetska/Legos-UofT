@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { GridItem, Grid, Box } from '@chakra-ui/react';
 import Editor from "@monaco-editor/react";
+import { isEmpty } from "../../node_modules/ramda/src/index";
 
 import { OptionsBar } from './ComponentMap';
-
-const firstDefault = "def greet(name):\n \\\ \n This function greets to\n the person passed in as\n a parameter\n \\\ \n print('Hello, ' + name + '. Good morning!')\n\n\n\n\n\n\n\n\n"
-const secondDefault = "print(Hello world)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-const thirdDefault = "option to do\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+import { defaultEditorsValue } from "./constants";
 
 const initialState = {
+    firstEditorInput: defaultEditorsValue.firstDefault,
+    secondEditorInput: defaultEditorsValue.secondDefault,
+    thirdEditorInput: defaultEditorsValue.thirdDefault,
     optional: false,
     versionBeta: false,
-    volume: 0,
-    inputOfToEditors: 'print',
-    areaEditor: 'aaa'
+    volume: 1,
 }
 
 function Editors() {
@@ -22,6 +21,19 @@ function Editors() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [resValue, setResValue] = useState([]);
     const invalidInput = sendValues.volume < 0 || sendValues.volume >= 50
+    const isButtonDisabled = invalidInput || isEmpty(sendValues.firstEditorInput) || isEmpty(sendValues.secondEditorInput) || isEmpty(sendValues.thirdEditorInput)
+
+    const handleFitstEditorChange = (value, event) => {
+        setSendValues({ ...sendValues, firstEditorInput: value })
+    }
+
+    const handleSecondEditorChange = (value, event) => {
+        setSendValues({ ...sendValues, secondEditorInput: value })
+    }
+
+    const handleThirdEditorChange = (value, event) => {
+        setSendValues({ ...sendValues, thirdEditorInput: value })
+    }
 
     const sendRequest = () => {
         const requestOptions = {
@@ -41,7 +53,7 @@ function Editors() {
                     setError(error);
                 })
     }
- 
+
     return (
         <Box>
             <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
@@ -49,24 +61,28 @@ function Editors() {
                     <Editor
                         height="40vh"
                         defaultLanguage="python"
-                        base="vs-dark"
                         automaticLayout="true"
-                        defaultValue={firstDefault}
+                        defaultValue={defaultEditorsValue.firstDefault}
+                        onChange={handleFitstEditorChange}
                     /></GridItem>
                 <GridItem w='90%' borderWidth='1px' >
                     <Editor
                         height="40vh"
                         defaultLanguage="python"
-                        defaultValue={secondDefault}
+                        automaticLayout="true"
+                        defaultValue={defaultEditorsValue.secondDefault}
+                        onChange={handleSecondEditorChange}
                     /></GridItem>
                 <GridItem w='90%' borderWidth='1px' >
                     <Editor
                         height="40vh"
                         defaultLanguage="python"
-                        defaultValue={thirdDefault}
+                        automaticLayout="true"
+                        defaultValue={defaultEditorsValue.thirdDefault}
+                        onChange={handleThirdEditorChange}
                     /></GridItem>
             </Grid>
-            <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} />
+            <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
         </Box>
     );
 }

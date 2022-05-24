@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text, HStack, NumberInput, NumberInputField, NumberIncrementStepper, NumberInputStepper, NumberDecrementStepper, Box } from '@chakra-ui/react';
-import { Notification } from './ComponentMap';
 
+import { Notification } from './ComponentMap';
 function InputOption({ text, setSendValues, sendValues, invalidInput }) {
 
     return (<Box >
@@ -27,5 +28,12 @@ function InputOption({ text, setSendValues, sendValues, invalidInput }) {
     </Box>
     );
 }
+
+InputOption.propTypes = {
+    text: PropTypes.string,
+    setSendValues: PropTypes.func,
+    sendValues: PropTypes.object,
+    invalidInput: PropTypes.bool
+};
 
 export default InputOption;

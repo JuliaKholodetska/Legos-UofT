@@ -1,15 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Heading, Flex, Divider, } from '@chakra-ui/react';
+import { Box, Heading, Flex, Divider, Text } from '@chakra-ui/react';
 
 import { Footer, Header } from './ComponentMap';
-
-/**
- * Renders a <Layout /> component
- * @param  props.children - this component can wrap other components and render them wihtin the main html element.
- * @returns <Layout> <div>...</div> </Layout>
- *
- **/
 
 const Layout = ({
     children
@@ -31,17 +24,20 @@ const Layout = ({
                         width="100%"
                         pl={15}
                         pr={15}>
-                        <Flex alignItems="center">
-                            {/* <Heading
+                        {/* <Flex alignItems="center"> */}
+                        <Box w="230px" borderColor="secondary.light.60" borderStyle="solid" borderBottomWidth="4px" ml={10}>
+                            <Text
                                 marginTop="40px"
-                                marginBottom="32px"
+                                marginBottom="10px"
                                 fontSize="1.5rem"
                                 as="h2"
-                                textStyle="body">
-                                Automatically check
-                            </Heading> */}
-                            {/* can be come elements here */}
-                        </Flex>
+                                ml={10}
+                                fontWeight="bold"
+                            >
+                                Auto Compiler
+                            </Text>
+                        </Box>
+                        {/* </Flex> */}
                         {children?.content ? children.content : children}
                     </Flex>
                 </Box>

@@ -2,17 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Flex, Text } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-
-/**
- * Renders a <Notification /> component
- * @param  props.infoText - notification text.
- * @param  props.top - top box offset.
- * @param  props.right - right box offset.
- * @param  props.bottom - bottom box offset.
- * @param  props.left - left box offset.
- * @returns <Notification infoText="Text" top="10"/>
- **/
-
 function Notification({
     infoText = '',
     top = 'auto',
