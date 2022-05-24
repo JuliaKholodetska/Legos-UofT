@@ -23,7 +23,7 @@ function InputOption({ text, setSendValues, sendValues, invalidInput }) {
                 </NumberInputStepper>
             </NumberInput>
         </HStack >
-        {invalidInput ? <Notification infoText="Volume should be less then 50" /> : null}
+        {invalidInput ? <Notification infoText="Volume should be less then 50 and more then 0" /> : null}
     </Box>
     );
 }

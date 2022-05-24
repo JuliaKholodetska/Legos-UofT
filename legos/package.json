@@ -12,6 +12,7 @@
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
     "framer-motion": "^6.3.3",
+    "monaco-themes": "^0.4.2",
     "next": "^12.1.6",
     "prop-types": "^15.8.1",
     "ramda": "^0.28.0",

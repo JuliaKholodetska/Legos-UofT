@@ -4,6 +4,10 @@ import Editor from "@monaco-editor/react";
 
 import { OptionsBar } from './ComponentMap';
 
+const firstDefault = "def greet(name):\n \\\ \n This function greets to\n the person passed in as\n a parameter\n \\\ \n print('Hello, ' + name + '. Good morning!')\n\n\n\n\n\n\n\n\n"
+const secondDefault = "print(Hello world)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+const thirdDefault = "option to do\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+
 const initialState = {
     optional: false,
     versionBeta: false,
@@ -37,27 +41,29 @@ function Editors() {
                     setError(error);
                 })
     }
-
+ 
     return (
         <Box>
-            <Grid templateColumns='repeat(3, 1fr)' gap={4} mt={50} >
-                <GridItem w='90%' >
+            <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
+                <GridItem w='90%' borderWidth='1px' ml={10}>
                     <Editor
                         height="40vh"
                         defaultLanguage="python"
-                        defaultValue="x = 3+5j  y = 5j"
+                        base="vs-dark"
+                        automaticLayout="true"
+                        defaultValue={firstDefault}
                     /></GridItem>
-                <GridItem w='90%' >
+                <GridItem w='90%' borderWidth='1px' >
                     <Editor
                         height="40vh"
                         defaultLanguage="python"
-                        defaultValue="print(type(y))"
+                        defaultValue={secondDefault}
                     /></GridItem>
-                <GridItem w='90%' >
+                <GridItem w='90%' borderWidth='1px' >
                     <Editor
                         height="40vh"
                         defaultLanguage="python"
-                        defaultValue="print(type(3))"
+                        defaultValue={thirdDefault}
                     /></GridItem>
             </Grid>
             <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} />
