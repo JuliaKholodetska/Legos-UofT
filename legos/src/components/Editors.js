@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GridItem, Grid, Box } from '@chakra-ui/react';
 import Editor from "@monaco-editor/react";
 import { isEmpty } from "../../node_modules/ramda/src/index";
 
-import { OptionsBar } from './ComponentMap';
+import { OptionsBar, Output } from './ComponentMap';
 import { defaultEditorsValue } from "./constants";
 
 const initialState = {
@@ -13,15 +13,33 @@ const initialState = {
     optional: false,
     versionBeta: false,
     volume: 1,
-}
+};
+const testText = {
+    Unsat: 'Unsat',
+    BSat: 'B-sat',
+    result: 'Please press to see output',
+    error: 'Please launch again'
+};
+const testRes = testText.error;
 
 function Editors() {
     const [sendValues, setSendValues] = useState(initialState)
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [resValue, setResValue] = useState([]);
-    const invalidInput = sendValues.volume < 0 || sendValues.volume >= 50
+    const [isDisabledOutput, setIsDisabledOutput] = useState(false)
+    const [isErrorOutput, setIsErrorOutput] = useState(false)
+    const invalidInput = sendValues.volume <= 0 || sendValues.volume >= 50
     const isButtonDisabled = invalidInput || isEmpty(sendValues.firstEditorInput) || isEmpty(sendValues.secondEditorInput) || isEmpty(sendValues.thirdEditorInput)
+   
+    useEffect(() => {
+        if (testRes === 'Unsat' || testRes === 'B-sat') {
+            setIsDisabledOutput(true)
+        }
+        if (testRes == 'Please launch again') {
+            setIsErrorOutput(true)
+        }
+    }, [testRes]);
 
     const handleFitstEditorChange = (value, event) => {
         setSendValues({ ...sendValues, firstEditorInput: value })
@@ -41,7 +59,7 @@ function Editors() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(sendValues)
         };
-        fetch('https://app/compiler', requestOptions)
+        fetch('https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits', requestOptions)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -83,6 +101,7 @@ function Editors() {
                     /></GridItem>
             </Grid>
             <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
+            <Output text={testRes} isDisabled={isDisabledOutput} isError={isErrorOutput} />
         </Box>
     );
 }

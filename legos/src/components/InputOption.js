@@ -9,11 +9,12 @@ function InputOption({ text, setSendValues, sendValues, invalidInput }) {
         <HStack spacing='24px' ml={100}>
             <Text fontSize='md'>{text}</Text>
             <NumberInput
-                min={0}
+                min={1}
                 max={50}
                 ml={5}
                 height="25px"
                 width="100px"
+                defaultValue={1}
                 isInvalid={invalidInput}
                 onChange={(value) => setSendValues({ ...sendValues, volume: value })}
                 size='sm'>
@@ -24,7 +25,7 @@ function InputOption({ text, setSendValues, sendValues, invalidInput }) {
                 </NumberInputStepper>
             </NumberInput>
         </HStack >
-        {invalidInput ? <Notification infoText="Volume should be less then 50 and more then 0" /> : null}
+        {invalidInput ? <Notification infoText="Volume should be less then 50 and more then 1" /> : null}
     </Box>
     );
 }
