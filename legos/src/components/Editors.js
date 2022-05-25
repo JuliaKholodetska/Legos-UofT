@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { GridItem, Grid, Box } from '@chakra-ui/react';
 import Editor from "@monaco-editor/react";
 import { isEmpty } from "../../node_modules/ramda/src/index";
+import axios from "axios";
 
 import { OptionsBar, Output } from './ComponentMap';
 import { defaultEditorsValue } from "./constants";
@@ -20,7 +21,7 @@ const testText = {
     result: 'Please press to see output',
     error: 'Please launch again'
 };
-const testRes = testText.error;
+const testRes = testText.Unsat;
 
 function Editors() {
     const [sendValues, setSendValues] = useState(initialState)
@@ -31,7 +32,7 @@ function Editors() {
     const [isErrorOutput, setIsErrorOutput] = useState(false)
     const invalidInput = sendValues.volume <= 0 || sendValues.volume >= 50
     const isButtonDisabled = invalidInput || isEmpty(sendValues.firstEditorInput) || isEmpty(sendValues.secondEditorInput) || isEmpty(sendValues.thirdEditorInput)
-   
+
     useEffect(() => {
         if (testRes === 'Unsat' || testRes === 'B-sat') {
             setIsDisabledOutput(true)
@@ -40,6 +41,11 @@ function Editors() {
             setIsErrorOutput(true)
         }
     }, [testRes]);
+
+    useEffect(() => {
+        console.log(resValue)
+    }, [resValue]);
+
 
     const handleFitstEditorChange = (value, event) => {
         setSendValues({ ...sendValues, firstEditorInput: value })
@@ -54,22 +60,23 @@ function Editors() {
     }
 
     const sendRequest = () => {
-        const requestOptions = {
+        const  requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {  "content-type": "multipart/form-data" },
             body: JSON.stringify(sendValues)
         };
-        fetch('https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits', requestOptions)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setIsLoaded(true);
-                    setResValue(result);
-                },
-                (error) => {
-                    setIsLoaded(true);
+
+        axios.post('http://localhost:5000/compiler', requestOptions)
+            .then(function (response) {
+                setIsLoaded(true);
+                setResValue(response);
+                console.log(response);
+            })
+            .catch(function (error) {
+                setIsLoaded(true);
                     setError(error);
-                })
+                console.log(error);
+            });
     }
 
     return (
