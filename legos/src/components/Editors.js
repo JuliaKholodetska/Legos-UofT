@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GridItem, Grid, Box } from '@chakra-ui/react';
+import { GridItem, Grid, Box, VStack, StackDivider, Input } from '@chakra-ui/react';
 import Editor from "@monaco-editor/react";
 import { isEmpty } from "../../node_modules/ramda/src/index";
 import axios from "axios";
@@ -58,11 +58,11 @@ function Editors() {
     const handleThirdEditorChange = (value, event) => {
         setSendValues({ ...sendValues, thirdEditorInput: value })
     }
-
+    console.log(JSON.stringify(sendValues))
     const sendRequest = () => {
-        const  requestOptions = {
+        const requestOptions = {
             method: 'POST',
-            headers: {  "content-type": "multipart/form-data" },
+            headers: { "content-type": "multipart/form-data" },
             body: JSON.stringify(sendValues)
         };
 
@@ -74,14 +74,14 @@ function Editors() {
             })
             .catch(function (error) {
                 setIsLoaded(true);
-                    setError(error);
+                setError(error);
                 console.log(error);
             });
     }
 
     return (
         <Box>
-            <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
+            {/* <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
                 <GridItem w='90%' borderWidth='1px' ml={10}>
                     <Editor
                         height="40vh"
@@ -106,7 +106,28 @@ function Editors() {
                         defaultValue={defaultEditorsValue.thirdDefault}
                         onChange={handleThirdEditorChange}
                     /></GridItem>
-            </Grid>
+            </Grid> */}
+            <VStack
+                mt={20}
+                ml={20}
+                mr={20}
+                // divider={<StackDivider borderColor='gray.200' />}
+                spacing={4}
+
+            >
+                <Box w="100%"  borderWidth='1px' borderRadius='lg'>
+                    <Editor
+
+                        height="40vh"
+                        defaultLanguage="python"
+                        automaticLayout="true"
+                        defaultValue={defaultEditorsValue.secondDefault}
+                        onChange={handleFitstEditorChange}
+                    />
+                </Box>
+                <Input placeholder='domain' size='sm' onChange={(event) => setSendValues({ ...sendValues, secondEditorInput: event.target.value })} />
+                <Input placeholder='option' size='sm' onChange={(event) => setSendValues({ ...sendValues, thirdEditorInput: event.target.value })} />
+            </VStack>
             <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
             <Output text={testRes} isDisabled={isDisabledOutput} isError={isErrorOutput} />
         </Box>
