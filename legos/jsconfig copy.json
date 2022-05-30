@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/assets/*": ["public/npp/*"],
+            "@/auth/*": ["auth/*"],
+            "@/components/*": ["components/*"],
+            "@/config/*": ["config/*"],
+            "@/features/*": ["features/*"],
+            "@/graphql/*": ["graphql/*"],
+            "@/hooks/*": ["hooks/*"],
+            "@/pages/*": ["pages/*"],
+            "@/state/*": ["state/*"],
+            "@/styles/*": ["styles/*"],
+            "@/theme/*": ["theme/*"],
+            "@/utils/*": ["utils/*"]
+        }
+    }
+}
