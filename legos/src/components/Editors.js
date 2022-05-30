@@ -58,7 +58,7 @@ function Editors() {
     const handleThirdEditorChange = (value, event) => {
         setSendValues({ ...sendValues, thirdEditorInput: value })
     }
-    console.log(JSON.stringify(sendValues))
+    
     const sendRequest = () => {
         const requestOptions = {
             method: 'POST',
@@ -81,7 +81,7 @@ function Editors() {
 
     return (
         <Box>
-            {/* <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
+            <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
                 <GridItem w='90%' borderWidth='1px' ml={10}>
                     <Editor
                         height="40vh"
@@ -106,8 +106,8 @@ function Editors() {
                         defaultValue={defaultEditorsValue.thirdDefault}
                         onChange={handleThirdEditorChange}
                     /></GridItem>
-            </Grid> */}
-            <VStack
+            </Grid>
+            {/* <VStack
                 mt={20}
                 ml={20}
                 mr={20}
@@ -128,6 +128,7 @@ function Editors() {
                 <Input placeholder='domain' size='sm' onChange={(event) => setSendValues({ ...sendValues, secondEditorInput: event.target.value })} />
                 <Input placeholder='option' size='sm' onChange={(event) => setSendValues({ ...sendValues, thirdEditorInput: event.target.value })} />
             </VStack>
+            */}
             <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
             <Output text={testRes} isDisabled={isDisabledOutput} isError={isErrorOutput} />
         </Box>
