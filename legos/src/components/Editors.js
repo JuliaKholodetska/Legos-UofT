@@ -59,7 +59,7 @@ function Editors() {
     const handleThirdEditorChange = (value, event) => {
         setSendValues({ ...sendValues, thirdEditorInput: Buffer.from(value).toString("base64") })
     }
-    console.log(sendValues)
+   
     const sendRequest = () => {
         const requestOptions = {
             method: 'POST',
