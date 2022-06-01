@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "Buffer": "^0.0.0",
+    "buffer-from": "^1.1.2"
+  }
+}

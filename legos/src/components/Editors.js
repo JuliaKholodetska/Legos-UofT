@@ -6,11 +6,12 @@ import axios from "axios";
 
 import { OptionsBar, Output } from './ComponentMap';
 import { defaultEditorsValue } from "./constants";
+import { Buffer } from 'buffer';
 
 const initialState = {
-    firstEditorInput: defaultEditorsValue.firstDefault,
-    secondEditorInput: defaultEditorsValue.secondDefault,
-    thirdEditorInput: defaultEditorsValue.thirdDefault,
+    firstEditorInput: Buffer.from(defaultEditorsValue.firstDefault).toString("base64"),
+    secondEditorInput: Buffer.from(defaultEditorsValue.secondDefault).toString("base64"),
+    thirdEditorInput: Buffer.from(defaultEditorsValue.thirdDefault).toString("base64"),
     optional: false,
     versionBeta: false,
     volume: 1,
@@ -48,17 +49,17 @@ function Editors() {
 
 
     const handleFitstEditorChange = (value, event) => {
-        setSendValues({ ...sendValues, firstEditorInput: value })
+        setSendValues({ ...sendValues, firstEditorInput: Buffer.from(value).toString("base64") })
     }
 
     const handleSecondEditorChange = (value, event) => {
-        setSendValues({ ...sendValues, secondEditorInput: value })
+        setSendValues({ ...sendValues, secondEditorInput: Buffer.from(value).toString("base64") })
     }
 
     const handleThirdEditorChange = (value, event) => {
-        setSendValues({ ...sendValues, thirdEditorInput: value })
+        setSendValues({ ...sendValues, thirdEditorInput: Buffer.from(value).toString("base64") })
     }
-    
+    console.log(sendValues)
     const sendRequest = () => {
         const requestOptions = {
             method: 'POST',
