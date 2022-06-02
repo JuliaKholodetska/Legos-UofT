@@ -43,9 +43,9 @@ function Editors() {
         }
     }, [testRes]);
 
-    useEffect(() => {
-        console.log(resValue)
-    }, [resValue]);
+    // useEffect(() => {
+    //     console.log(resValue)
+    // }, [resValue]);
 
 
     const handleFitstEditorChange = (value, event) => {
