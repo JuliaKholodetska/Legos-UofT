@@ -16,33 +16,17 @@ const initialState = {
     versionBeta: false,
     volume: 1,
 };
-// const testText = {
-//     Unsat: 'Unsat',
-//     BSat: 'B-sat',
-//     result: 'Please press to see output',
-//     error: 'Please launch again'
-// };
-// const testRes = testText.Unsat;
 
 function Editors() {
     const [sendValues, setSendValues] = useState(initialState)
     const [error, setError] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [resValue, setResValue] = useState([]);
-    const [isEditorRes, setIsEditorRes] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false); //probavly optional or will be handeled in a future
+    const [resValue, setResValue] = useState('');
     const [isDisabledOutput, setIsDisabledOutput] = useState(true)
     const [isErrorOutput, setIsErrorOutput] = useState(false)
+    const [isOpenCard, setIsOpenCard] = useState(false)
     const invalidInput = sendValues.volume <= 0 || sendValues.volume >= 50
     const isButtonDisabled = invalidInput || isEmpty(sendValues.firstEditorInput) || isEmpty(sendValues.secondEditorInput) || isEmpty(sendValues.thirdEditorInput)
-
-    // useEffect(() => {
-    //     if (testRes === 'Unsat' || testRes === 'B-sat') {
-    //         setIsDisabledOutput(true)
-    //     }
-    //     if (testRes == 'Please launch again') {
-    //         setIsErrorOutput(true)
-    //     }
-    // }, [testRes]);
 
     useEffect(() => {
         if (resValue === 'UNSAT' || resValue === 'B-SAT') {
@@ -50,6 +34,7 @@ function Editors() {
         }
         if (error) {
             setIsErrorOutput(true)
+            setResValue('Please launch again')
         }
         if (resValue.length > 10) { setIsDisabledOutput(false) }
     }, [resValue]);
@@ -113,8 +98,8 @@ function Editors() {
                         onChange={handleThirdEditorChange}
                     /></GridItem>
             </Grid>
-            <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
-            <Output text={resValue}isDisabled={isDisabledOutput} isError={isErrorOutput} />
+            <OptionsBar setIsOpenCard={setIsOpenCard} setResValue={setResValue} setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
+            <Output text={resValue} isDisabled={isDisabledOutput} isError={isErrorOutput} isOpenCard={isOpenCard} setIsOpenCard={setIsOpenCard} />
         </Box>
     );
 }
