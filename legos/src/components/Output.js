@@ -8,9 +8,9 @@ function Output({
     // text = '',
     // subtitle = '',
     // openCard = () => {},
-    text = '',
+    text = 'You need to enter inpur first',
     isError = false,
-    isDisabled = false
+    isDisabled = true
 }) {
     const [isOpenCard, setIsOpenCard] = useState(false)
     const circleColor = cond([
@@ -39,7 +39,7 @@ function Output({
                         Result:
                     </Text>
                     <Text fontSize="xl" mt="20px">
-                        Result is here
+                        {text}
                     </Text>
                 </Box>
             </Flex > :
@@ -59,7 +59,7 @@ function Output({
                         Result:
                     </Text>
                     <Text fontSize="xl">
-                        {text}
+                        {isDisabled ? text : "Please press to see output"}
                     </Text>
                 </HStack>
             </HStack>}</>

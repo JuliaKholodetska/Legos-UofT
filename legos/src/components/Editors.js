@@ -16,37 +16,43 @@ const initialState = {
     versionBeta: false,
     volume: 1,
 };
-const testText = {
-    Unsat: 'Unsat',
-    BSat: 'B-sat',
-    result: 'Please press to see output',
-    error: 'Please launch again'
-};
-const testRes = testText.Unsat;
+// const testText = {
+//     Unsat: 'Unsat',
+//     BSat: 'B-sat',
+//     result: 'Please press to see output',
+//     error: 'Please launch again'
+// };
+// const testRes = testText.Unsat;
 
 function Editors() {
     const [sendValues, setSendValues] = useState(initialState)
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [resValue, setResValue] = useState([]);
-    const [isDisabledOutput, setIsDisabledOutput] = useState(false)
+    const [isEditorRes, setIsEditorRes] = useState(false);
+    const [isDisabledOutput, setIsDisabledOutput] = useState(true)
     const [isErrorOutput, setIsErrorOutput] = useState(false)
     const invalidInput = sendValues.volume <= 0 || sendValues.volume >= 50
     const isButtonDisabled = invalidInput || isEmpty(sendValues.firstEditorInput) || isEmpty(sendValues.secondEditorInput) || isEmpty(sendValues.thirdEditorInput)
 
+    // useEffect(() => {
+    //     if (testRes === 'Unsat' || testRes === 'B-sat') {
+    //         setIsDisabledOutput(true)
+    //     }
+    //     if (testRes == 'Please launch again') {
+    //         setIsErrorOutput(true)
+    //     }
+    // }, [testRes]);
+
     useEffect(() => {
-        if (testRes === 'Unsat' || testRes === 'B-sat') {
+        if (resValue === 'UNSAT' || resValue === 'B-SAT') {
             setIsDisabledOutput(true)
         }
-        if (testRes == 'Please launch again') {
+        if (error) {
             setIsErrorOutput(true)
         }
-    }, [testRes]);
-
-    // useEffect(() => {
-    //     console.log(resValue)
-    // }, [resValue]);
-
+        if (resValue.length > 10) { setIsDisabledOutput(false) }
+    }, [resValue]);
 
     const handleFitstEditorChange = (value, event) => {
         setSendValues({ ...sendValues, firstEditorInput: Buffer.from(value).toString("base64") })
@@ -59,7 +65,7 @@ function Editors() {
     const handleThirdEditorChange = (value, event) => {
         setSendValues({ ...sendValues, thirdEditorInput: Buffer.from(value).toString("base64") })
     }
-   
+
     const sendRequest = () => {
         const requestOptions = {
             method: 'POST',
@@ -70,8 +76,7 @@ function Editors() {
         axios.post('http://localhost:5000/compiler', requestOptions)
             .then(function (response) {
                 setIsLoaded(true);
-                setResValue(response);
-                console.log(response);
+                setResValue(response.data);
             })
             .catch(function (error) {
                 setIsLoaded(true);
@@ -108,30 +113,8 @@ function Editors() {
                         onChange={handleThirdEditorChange}
                     /></GridItem>
             </Grid>
-            {/* <VStack
-                mt={20}
-                ml={20}
-                mr={20}
-                // divider={<StackDivider borderColor='gray.200' />}
-                spacing={4}
-
-            >
-                <Box w="100%"  borderWidth='1px' borderRadius='lg'>
-                    <Editor
-
-                        height="40vh"
-                        defaultLanguage="python"
-                        automaticLayout="true"
-                        defaultValue={defaultEditorsValue.secondDefault}
-                        onChange={handleFitstEditorChange}
-                    />
-                </Box>
-                <Input placeholder='domain' size='sm' onChange={(event) => setSendValues({ ...sendValues, secondEditorInput: event.target.value })} />
-                <Input placeholder='option' size='sm' onChange={(event) => setSendValues({ ...sendValues, thirdEditorInput: event.target.value })} />
-            </VStack>
-            */}
             <OptionsBar setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
-            <Output text={testRes} isDisabled={isDisabledOutput} isError={isErrorOutput} />
+            <Output text={resValue}isDisabled={isDisabledOutput} isError={isErrorOutput} />
         </Box>
     );
 }
