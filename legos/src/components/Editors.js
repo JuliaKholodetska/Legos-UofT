@@ -29,7 +29,7 @@ function Editors() {
     const isButtonDisabled = invalidInput || isEmpty(sendValues.firstEditorInput) || isEmpty(sendValues.secondEditorInput) || isEmpty(sendValues.thirdEditorInput)
 
     useEffect(() => {
-        if (resValue === 'UNSAT' || resValue === 'B-SAT') {
+        if (resValue === 'unsat' || resValue === 'bounded unsat') {
             setIsDisabledOutput(true)
         }
         if (error) {
