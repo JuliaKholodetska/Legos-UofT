@@ -2,20 +2,18 @@ import { useState } from 'react';
 import { always, cond, T } from 'ramda';
 import { Circle, Text, Flex, Box, HStack } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import Editor from "@monaco-editor/react";
 
 function Output({
     isLastActiveIndex = false,
-    // text = '',
-    // subtitle = '',
-    // openCard = () => {},
-    text = '',
+    text = 'You need to enter inpur first',
     isError = false,
-    isDisabled = false
+    isDisabled = true,
+    isOpenCard = false,
+    setIsOpenCard = () => { },
 }) {
-    const [isOpenCard, setIsOpenCard] = useState(false)
     const circleColor = cond([
         [() => isDisabled, always('divider.main')],
-        [() => isLastActiveIndex, always('secondary.main')],
         [() => isError, always('error.main')],
         [() => isOpenCard, always('success.main')],
         [T, always('text.main')]
@@ -38,9 +36,15 @@ function Output({
                     <Text fontWeight={isDisabled ? '400' : '700'} fontSize="xl" mr="40px">
                         Result:
                     </Text>
-                    <Text fontSize="xl" mt="20px">
-                        Result is here
-                    </Text>
+                    <Box w='100%' mt="20px">
+                        <Editor
+                            height="40vh"
+                            defaultLanguage="python"
+                            automaticLayout="true"
+                            defaultValue={text}
+                            width="90vh"
+                        />
+                    </Box>
                 </Box>
             </Flex > :
             <HStack
@@ -59,7 +63,7 @@ function Output({
                         Result:
                     </Text>
                     <Text fontSize="xl">
-                        {text}
+                        {isDisabled ? text : "Please press to see output"}
                     </Text>
                 </HStack>
             </HStack>}</>
