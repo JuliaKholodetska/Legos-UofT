@@ -1,20 +1,18 @@
-import { useState } from 'react';
 import { always, cond, T } from 'ramda';
 import { Circle, Text, Flex, Box, HStack } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import Editor from "@monaco-editor/react";
+import CodeMirror from '@uiw/react-codemirror';
 
 function Output({
-    isLastActiveIndex = false,
-    text = 'You need to enter inpur first',
+    text = 'You need to enter input first',
     isError = false,
     isDisabled = true,
     isOpenCard = false,
     setIsOpenCard = () => { },
 }) {
     const circleColor = cond([
-        [() => isDisabled, always('divider.main')],
         [() => isError, always('error.main')],
+        [() => isDisabled, always('divider.main')],
         [() => isOpenCard, always('success.main')],
         [T, always('text.main')]
     ]);
@@ -37,11 +35,9 @@ function Output({
                         Result:
                     </Text>
                     <Box w='100%' mt="20px">
-                        <Editor
+                        <CodeMirror
+                            value={text}
                             height="40vh"
-                            defaultLanguage="python"
-                            automaticLayout="true"
-                            defaultValue={text}
                             width="90vh"
                         />
                     </Box>
@@ -63,7 +59,7 @@ function Output({
                         Result:
                     </Text>
                     <Text fontSize="xl">
-                        {isDisabled ? text : "Please press to see output"}
+                        {isDisabled || isError ? text : "Please press to see output"}
                     </Text>
                 </HStack>
             </HStack>}</>

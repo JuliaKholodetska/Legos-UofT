@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { GridItem, Grid, Box, VStack, StackDivider, Input } from '@chakra-ui/react';
-import Editor from "@monaco-editor/react";
-import { isEmpty } from "../../node_modules/ramda/src/index";
+import CodeMirror from '@uiw/react-codemirror';
+import { autocompletion } from "@codemirror/autocomplete"
+import { GridItem, Grid, Box } from '@chakra-ui/react';
 import axios from "axios";
+import { Buffer } from 'buffer';
+import { isEmpty } from "../../node_modules/ramda/src/index";
 
 import { OptionsBar, Output } from './ComponentMap';
-import { defaultEditorsValue } from "./constants";
-import { Buffer } from 'buffer';
+import { completions, defaultEditorsValue } from "./constants";
+
+
+function myCompletions(context) {
+    let before = context.matchBefore(/\w+/)
+    // If completion wasn't explicitly started and there
+    // is no word before the cursor, don't open completions.
+    if (!context.explicit && !before) return null
+    return {
+        from: before ? before.from : context.pos,
+        options: completions,
+        validFor: /^\w*$/
+    }
+}
 
 const initialState = {
     firstEditorInput: Buffer.from(defaultEditorsValue.firstDefault).toString("base64"),
@@ -31,15 +45,16 @@ function Editors() {
     useEffect(() => {
         if (resValue === 'unsat' || resValue === 'bounded unsat') {
             setIsDisabledOutput(true)
+            setIsErrorOutput(false)
         }
-        if (error) {
+        if (resValue === 'ERROR') {
             setIsErrorOutput(true)
             setResValue('Please launch again')
         }
-        if (resValue.length > 10) { setIsDisabledOutput(false) }
+        if (resValue.length > 10 && resValue !== 'Please launch again') { setIsDisabledOutput(false); setIsErrorOutput(false) }
     }, [resValue]);
 
-    const handleFitstEditorChange = (value, event) => {
+    const handleFirstEditorChange = (value, event) => {
         setSendValues({ ...sendValues, firstEditorInput: Buffer.from(value).toString("base64") })
     }
 
@@ -73,28 +88,35 @@ function Editors() {
     return (
         <Box>
             <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
-                <GridItem w='90%' borderWidth='1px' ml={10}>
-                    <Editor
+                <GridItem w='80%' borderWidth='1px' ml={10}>
+                    <CodeMirror
+                        value={defaultEditorsValue.firstDefault}
                         height="40vh"
-                        defaultLanguage="python"
-                        automaticLayout="true"
-                        defaultValue={defaultEditorsValue.firstDefault}
-                        onChange={handleFitstEditorChange}
-                    /></GridItem>
+                        extensions={[
+                            autocompletion({ override: [myCompletions] })
+                        ]
+                        }
+                        onChange={handleFirstEditorChange}
+                    />
+                </GridItem>
                 <GridItem w='90%' borderWidth='1px' >
-                    <Editor
+                    <CodeMirror
+                        value={defaultEditorsValue.secondDefault}
                         height="40vh"
-                        defaultLanguage="python"
-                        automaticLayout="true"
-                        defaultValue={defaultEditorsValue.secondDefault}
+                        extensions={[
+                            autocompletion({ override: [myCompletions] })
+                        ]
+                        }
                         onChange={handleSecondEditorChange}
                     /></GridItem>
                 <GridItem w='90%' borderWidth='1px' >
-                    <Editor
+                    <CodeMirror
+                        value={defaultEditorsValue.thirdDefault}
                         height="40vh"
-                        defaultLanguage="python"
-                        automaticLayout="true"
-                        defaultValue={defaultEditorsValue.thirdDefault}
+                        extensions={[
+                            autocompletion({ override: [myCompletions] })
+                        ]
+                        }
                         onChange={handleThirdEditorChange}
                     /></GridItem>
             </Grid>
