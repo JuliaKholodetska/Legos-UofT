@@ -5,7 +5,10 @@ export const defaultEditorsValue = {
 }
 
 export const completions = [
-    { label: "panic", type: "keyword" },
-    { label: "park", type: "constant", info: "Test completion" },
-    { label: "password", type: "variable" },
+    { label: "health", type: "keyword" },
+    { label: "home", type: "keyword" },
+    { label: "care", type: "constant", info: "Test completion" },
+    { label: "cat", type: "constant", info: "Test completion" },
+    { label: "rule", type: "constant", info: "Test completion" },
+    { label: "software", type: "variable" },
 ]
