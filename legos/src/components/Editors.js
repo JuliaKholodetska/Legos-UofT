@@ -36,6 +36,7 @@ function Editors() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false); //probavly optional or will be handeled in a future
     const [resValue, setResValue] = useState('');
+    const [placeholderResValue, setPlaceholderResValue] = useState('');
     const [isDisabledOutput, setIsDisabledOutput] = useState(true)
     const [isErrorOutput, setIsErrorOutput] = useState(false)
     const [isOpenCard, setIsOpenCard] = useState(false)
@@ -46,12 +47,19 @@ function Editors() {
         if (resValue === 'unsat' || resValue === 'bounded unsat') {
             setIsDisabledOutput(true)
             setIsErrorOutput(false)
+            if (resValue === 'unsat') setPlaceholderResValue('unsat')
+            if (resValue === 'bounded unsat') setPlaceholderResValue('bounded unsat')
         }
         if (resValue === 'ERROR') {
             setIsErrorOutput(true)
             setResValue('Please launch again')
+            setPlaceholderResValue('Please launch again')
         }
-        if (resValue.length > 10 && resValue !== 'Please launch again') { setIsDisabledOutput(false); setIsErrorOutput(false) }
+        if (resValue.length > 10 && resValue !== 'Please launch again') {
+            setIsDisabledOutput(false);
+            setIsErrorOutput(false)
+            setPlaceholderResValue('Please press to see output')
+        }
     }, [resValue]);
 
     const handleFirstEditorChange = (value, event) => {
@@ -121,7 +129,7 @@ function Editors() {
                     /></GridItem>
             </Grid>
             <OptionsBar setIsOpenCard={setIsOpenCard} setResValue={setResValue} setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
-            <Output text={resValue} isDisabled={isDisabledOutput} isError={isErrorOutput} isOpenCard={isOpenCard} setIsOpenCard={setIsOpenCard} />
+            <Output text={resValue} placeholderResValue={placeholderResValue} isDisabled={isDisabledOutput} isError={isErrorOutput} isOpenCard={isOpenCard} setIsOpenCard={setIsOpenCard} />
         </Box>
     );
 }

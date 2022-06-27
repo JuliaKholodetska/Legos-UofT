@@ -5,6 +5,7 @@ import CodeMirror from '@uiw/react-codemirror';
 
 function Output({
     text = 'You need to enter input first',
+    placeholderResValue = 'You need to enter input first',
     isError = false,
     isDisabled = true,
     isOpenCard = false,
@@ -59,7 +60,7 @@ function Output({
                         Result:
                     </Text>
                     <Text fontSize="xl">
-                        {isDisabled || isError ? text : "Please press to see output"}
+                        {placeholderResValue}
                     </Text>
                 </HStack>
             </HStack>}</>
