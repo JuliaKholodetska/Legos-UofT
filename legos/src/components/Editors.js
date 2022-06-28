@@ -5,10 +5,14 @@ import { GridItem, Grid, Box } from '@chakra-ui/react';
 import axios from "axios";
 import { Buffer } from 'buffer';
 import { isEmpty } from "../../node_modules/ramda/src/index";
-
 import { OptionsBar, Output } from './ComponentMap';
 import { completions, defaultEditorsValue } from "./constants";
-
+import { sublime } from '@uiw/codemirror-theme-sublime';
+import { languages } from '@codemirror/language-data';
+import { python } from '@codemirror/lang-python';
+import { duotoneLight } from '@uiw/codemirror-theme-duotone';
+import { eclipse } from '@uiw/codemirror-theme-eclipse';
+import { okaidia } from '@uiw/codemirror-theme-okaidia';
 
 function myCompletions(context) {
     let before = context.matchBefore(/\w+/)
@@ -101,9 +105,22 @@ function Editors() {
                         value={defaultEditorsValue.firstDefault}
                         height="40vh"
                         extensions={[
-                            autocompletion({ override: [myCompletions] })
+                            autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
                         ]
                         }
+                        options={{
+                            tabSize: 2,
+                            lint: true,
+                            lineNumbers: true,
+                            lineWrapping: true,
+                            spellcheck: true,
+                            autoCloseTags: true,
+                            autoCloseBrackets: true,
+                            matchTags: true,
+                            matchBrackets: true
+                        }}
+                        theme={duotoneLight}
+                        overflow="auto"
                         onChange={handleFirstEditorChange}
                     />
                 </GridItem>
@@ -112,9 +129,22 @@ function Editors() {
                         value={defaultEditorsValue.secondDefault}
                         height="40vh"
                         extensions={[
-                            autocompletion({ override: [myCompletions] })
+                            autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
                         ]
                         }
+                        options={{
+                            tabSize: 2,
+                            lint: true,
+                            lineNumbers: true,
+                            lineWrapping: true,
+                            spellcheck: true,
+                            autoCloseTags: true,
+                            autoCloseBrackets: true,
+                            matchTags: true,
+                            matchBrackets: true
+                        }}
+                        theme={sublime}
+                        overflow="auto"
                         onChange={handleSecondEditorChange}
                     /></GridItem>
                 <GridItem w='90%' borderWidth='1px' >
@@ -122,9 +152,23 @@ function Editors() {
                         value={defaultEditorsValue.thirdDefault}
                         height="40vh"
                         extensions={[
-                            autocompletion({ override: [myCompletions] })
+                            autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
                         ]
                         }
+                        options={{
+                            tabSize: 2,
+                            lint: true,
+                            lineNumbers: true,
+                            lineWrapping: true,
+                            spellcheck: true,
+                            autoCloseTags: true,
+                            autoCloseBrackets: true,
+                            matchTags: true,
+                            matchBrackets: true
+                        }}
+                        outline="none"
+                        theme={okaidia}
+                        overflow="auto"
                         onChange={handleThirdEditorChange}
                     /></GridItem>
             </Grid>
