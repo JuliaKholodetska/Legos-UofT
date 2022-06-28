@@ -2,6 +2,7 @@ import { always, cond, T } from 'ramda';
 import { Circle, Text, Flex, Box, HStack } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import CodeMirror from '@uiw/react-codemirror';
+import { sublime } from '@uiw/codemirror-theme-sublime';
 
 function Output({
     text = 'You need to enter input first',
@@ -40,6 +41,7 @@ function Output({
                             value={text}
                             height="40vh"
                             width="90vh"
+                            theme={sublime}
                         />
                     </Box>
                 </Box>

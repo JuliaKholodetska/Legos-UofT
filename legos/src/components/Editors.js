@@ -10,9 +10,9 @@ import { completions, defaultEditorsValue } from "./constants";
 import { sublime } from '@uiw/codemirror-theme-sublime';
 import { languages } from '@codemirror/language-data';
 import { python } from '@codemirror/lang-python';
-import { duotoneLight } from '@uiw/codemirror-theme-duotone';
-import { eclipse } from '@uiw/codemirror-theme-eclipse';
-import { okaidia } from '@uiw/codemirror-theme-okaidia';
+// import { duotoneLight } from '@uiw/codemirror-theme-duotone';
+// import { eclipse } from '@uiw/codemirror-theme-eclipse';
+// import { okaidia } from '@uiw/codemirror-theme-okaidia';
 
 function myCompletions(context) {
     let before = context.matchBefore(/\w+/)
