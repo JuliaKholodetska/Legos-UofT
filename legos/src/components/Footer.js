@@ -15,6 +15,9 @@ const Footer = () => {
                     <Text fontSize="sm" fontWeight="medium" color="text.secondary.80" textStyle="body">
                         Legos app
                     </Text>
+                    {/* <Text fontSize="sm" fontWeight="medium" color="text.secondary.80" textStyle="body">
+                        Contact us
+                    </Text> */}
                 </Center>
             </Box>
         </Box>

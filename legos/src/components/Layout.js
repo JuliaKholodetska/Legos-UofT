@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Heading, Flex, Divider, Text } from '@chakra-ui/react';
+import { Box, Heading, Flex, Divider, Text, Center } from '@chakra-ui/react';
 
 import { Footer, Header } from './ComponentMap';
 
@@ -25,16 +25,16 @@ const Layout = ({
                         pl={15}
                         pr={15}>
                         {/* <Flex alignItems="center"> */}
-                        <Box w="230px" borderColor="secondary.light.60" borderStyle="solid" borderBottomWidth="4px" ml={10}>
-                            <Text
+                        <Box w="176px" borderColor="secondary.light.30" borderStyle="solid" borderBottomWidth="4px" ml="90px">
+                             <Text
                                 marginTop="40px"
                                 marginBottom="10px"
                                 fontSize="1.5rem"
                                 as="h2"
-                                ml={10}
+                                // ml={10}
                                 fontWeight="bold"
                             >
-                                Auto Compiler
+                                Legos Checker
                             </Text>
                         </Box>
                         {/* </Flex> */}

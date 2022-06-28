@@ -119,7 +119,8 @@ function Editors() {
                             matchTags: true,
                             matchBrackets: true
                         }}
-                        theme={duotoneLight}
+                        theme={sublime}
+                        // theme={duotoneLight}
                         overflow="auto"
                         onChange={handleFirstEditorChange}
                     />
@@ -167,7 +168,8 @@ function Editors() {
                             matchBrackets: true
                         }}
                         outline="none"
-                        theme={okaidia}
+                        theme={sublime}
+                        // theme={okaidia}
                         overflow="auto"
                         onChange={handleThirdEditorChange}
                     /></GridItem>
