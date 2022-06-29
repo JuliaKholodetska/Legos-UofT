@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import CodeMirror from '@uiw/react-codemirror';
 import { autocompletion } from "@codemirror/autocomplete"
 import { GridItem, Grid, Box } from '@chakra-ui/react';
@@ -10,14 +11,9 @@ import { completions, defaultEditorsValue } from "./constants";
 import { sublime } from '@uiw/codemirror-theme-sublime';
 import { languages } from '@codemirror/language-data';
 import { python } from '@codemirror/lang-python';
-// import { duotoneLight } from '@uiw/codemirror-theme-duotone';
-// import { eclipse } from '@uiw/codemirror-theme-eclipse';
-// import { okaidia } from '@uiw/codemirror-theme-okaidia';
 
 function myCompletions(context) {
     let before = context.matchBefore(/\w+/)
-    // If completion wasn't explicitly started and there
-    // is no word before the cursor, don't open completions.
     if (!context.explicit && !before) return null
     return {
         from: before ? before.from : context.pos,
@@ -35,7 +31,8 @@ const initialState = {
     volume: 1,
 };
 
-function Editors() {
+
+function Editors({ isExample, example }) {
     const [sendValues, setSendValues] = useState(initialState)
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false); //probavly optional or will be handeled in a future
@@ -99,85 +96,166 @@ function Editors() {
 
     return (
         <Box>
-            <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
-                <GridItem w='80%' borderWidth='1px' ml={10}>
-                    <CodeMirror
-                        value={defaultEditorsValue.firstDefault}
-                        height="40vh"
-                        extensions={[
-                            autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
-                        ]
-                        }
-                        options={{
-                            tabSize: 2,
-                            lint: true,
-                            lineNumbers: true,
-                            lineWrapping: true,
-                            spellcheck: true,
-                            autoCloseTags: true,
-                            autoCloseBrackets: true,
-                            matchTags: true,
-                            matchBrackets: true
-                        }}
-                        theme={sublime}
-                        // theme={duotoneLight}
-                        overflow="auto"
-                        onChange={handleFirstEditorChange}
-                    />
-                </GridItem>
-                <GridItem w='90%' borderWidth='1px' >
-                    <CodeMirror
-                        value={defaultEditorsValue.secondDefault}
-                        height="40vh"
-                        extensions={[
-                            autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
-                        ]
-                        }
-                        options={{
-                            tabSize: 2,
-                            lint: true,
-                            lineNumbers: true,
-                            lineWrapping: true,
-                            spellcheck: true,
-                            autoCloseTags: true,
-                            autoCloseBrackets: true,
-                            matchTags: true,
-                            matchBrackets: true
-                        }}
-                        theme={sublime}
-                        overflow="auto"
-                        onChange={handleSecondEditorChange}
-                    /></GridItem>
-                <GridItem w='90%' borderWidth='1px' >
-                    <CodeMirror
-                        value={defaultEditorsValue.thirdDefault}
-                        height="40vh"
-                        extensions={[
-                            autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
-                        ]
-                        }
-                        options={{
-                            tabSize: 2,
-                            lint: true,
-                            lineNumbers: true,
-                            lineWrapping: true,
-                            spellcheck: true,
-                            autoCloseTags: true,
-                            autoCloseBrackets: true,
-                            matchTags: true,
-                            matchBrackets: true
-                        }}
-                        outline="none"
-                        theme={sublime}
-                        // theme={okaidia}
-                        overflow="auto"
-                        onChange={handleThirdEditorChange}
-                    /></GridItem>
-            </Grid>
+            {isExample.isExampleBool && example ? (
+                <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
+                    <GridItem w='80%' borderWidth='1px' ml={10}>
+                        <CodeMirror
+                            // readOnly="true"
+                            value={example.firstEditorInput}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleFirstEditorChange}
+                        />
+                    </GridItem>
+                    <GridItem w='90%' borderWidth='1px' >
+                        <CodeMirror
+                            // readOnly="true"
+                            value={example.secondEditorInput}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleSecondEditorChange}
+                        /></GridItem>
+                    <GridItem w='90%' borderWidth='1px' >
+                        <CodeMirror
+                            // readOnly="true"
+                            value={example.thirdEditorInput}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            outline="none"
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleThirdEditorChange}
+                        /></GridItem>
+                </Grid>) :
+                (<Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
+                    <GridItem w='80%' borderWidth='1px' ml={10}>
+                        <CodeMirror
+                            value={defaultEditorsValue.firstDefault}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleFirstEditorChange}
+                        />
+                    </GridItem>
+                    <GridItem w='90%' borderWidth='1px' >
+                        <CodeMirror
+                            value={defaultEditorsValue.secondDefault}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleSecondEditorChange}
+                        /></GridItem>
+                    <GridItem w='90%' borderWidth='1px' >
+                        <CodeMirror
+                            value={defaultEditorsValue.thirdDefault}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            outline="none"
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleThirdEditorChange}
+                        /></GridItem>
+                </Grid>)
+            }
             <OptionsBar setIsOpenCard={setIsOpenCard} setResValue={setResValue} setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
             <Output text={resValue} placeholderResValue={placeholderResValue} isDisabled={isDisabledOutput} isError={isErrorOutput} isOpenCard={isOpenCard} setIsOpenCard={setIsOpenCard} />
         </Box>
     );
 }
+
+Editors.propTypes = {
+    isExample: PropTypes.object,
+    example: PropTypes.object,
+};
 
 export default Editors;

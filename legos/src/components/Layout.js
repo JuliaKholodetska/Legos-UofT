@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Heading, Flex, Divider, Text, Spacer } from '@chakra-ui/react';
+import { Box, Flex, Divider, Text, Spacer } from '@chakra-ui/react';
 
 import { Footer, Header, MenuDropdown } from './ComponentMap';
 
 const Layout = ({
-    children
+    children, setIsExample
 }) => {
     return (
         <>
@@ -38,7 +38,7 @@ const Layout = ({
                             </Box>
                             <Spacer></Spacer>
                             <Box w="110px" mr="100px" mt="30px"  >
-                                <MenuDropdown />
+                                <MenuDropdown setIsExample={setIsExample}/>
                             </Box>
                         </Flex>
                         {children?.content ? children.content : children}

@@ -1,13 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu, MenuButton, MenuItem, MenuList, Button, MenuDivider, Text } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuItem, MenuList, Button, MenuDivider } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 function MenuDropdown({
-    // infoText = '',
-    // top = 'auto',
-    // right = 'auto',
-    // bottom = 'auto',
-    // left = 'auto'bg='white'  colorScheme='blue'
+    setIsExample
 }) {
     return (
         <Menu >
@@ -15,18 +11,38 @@ function MenuDropdown({
                 Examples
             </MenuButton>
             <MenuList>
-                <MenuItem>Hole</MenuItem>
-                <MenuItem>Lambda</MenuItem>
-                <MenuItem>Let</MenuItem>
+                <MenuItem onClick={() => setIsExample({
+                    isExampleBool: true,
+                    type: 'hole'
+                })}>
+                    Hole
+                </MenuItem>
+                <MenuItem onClick={() => setIsExample({
+                    isExampleBool: true,
+                    type: 'lambda'
+                })}>
+                    Lambda
+                </MenuItem>
+                <MenuItem onClick={() => setIsExample({
+                    isExampleBool: true,
+                    type: 'let'
+                })}>
+                    Let
+                </MenuItem>
                 <MenuDivider />
-                <MenuItem>My Editor</MenuItem>
+                <MenuItem onClick={() => setIsExample({
+                    isExampleBool: false,
+                    type: 'editor'
+                })}>
+                    My Editor
+                </MenuItem>
             </MenuList>
         </Menu >
     );
 }
 
 MenuDropdown.propTypes = {
-
+    setIsExample: PropTypes.func
 };
 
 export default MenuDropdown;
