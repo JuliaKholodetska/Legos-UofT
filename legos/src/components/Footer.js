@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Text, Box, Center } from '@chakra-ui/react';
+import { Divider, Text, Box, Center, Flex } from '@chakra-ui/react';
 
 const Footer = () => {
     return (
@@ -15,10 +15,15 @@ const Footer = () => {
                     <Text fontSize="sm" fontWeight="medium" color="text.secondary.80" textStyle="body">
                         Legos app
                     </Text>
-                    {/* <Text fontSize="sm" fontWeight="medium" color="text.secondary.80" textStyle="body">
-                        Contact us
-                    </Text> */}
                 </Center>
+                <Flex>
+                    <Text fontSize="sm" fontWeight="bold" color="text.secondary.80" textStyle="body" mt={4}>
+                        Contact us:
+                    </Text>
+                    <Text fontSize="sm" fontWeight="medium" color="text.secondary.80" textStyle="body" mt={4} ml={8}>
+                        lina@gmail.com
+                    </Text>
+                </Flex>
             </Box>
         </Box>
     );
