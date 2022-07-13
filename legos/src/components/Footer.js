@@ -18,11 +18,11 @@ const Footer = () => {
                 </Center>
                 <Flex>
                     <Text fontSize="sm" fontWeight="bold" color="text.secondary.80" textStyle="body" mt={4}>
-                        Contact us:
+                        Contact us
                     </Text>
-                    <Text fontSize="sm" fontWeight="medium" color="text.secondary.80" textStyle="body" mt={4} ml={8}>
+                    {/* <Text fontSize="sm" fontWeight="medium" color="text.secondary.80" textStyle="body" mt={4} ml={8}>
                         lina@gmail.com
-                    </Text>
+                    </Text> */}
                 </Flex>
             </Box>
         </Box>

@@ -7,20 +7,11 @@ import axios from "axios";
 import { Buffer } from 'buffer';
 import { isEmpty } from "../../node_modules/ramda/src/index";
 import { OptionsBar, Output } from './ComponentMap';
-import { completions, defaultEditorsValue } from "./constants";
+import { defaultEditorsValue } from "./constants";
 import { sublime } from '@uiw/codemirror-theme-sublime';
 import { languages } from '@codemirror/language-data';
 import { python } from '@codemirror/lang-python';
-
-function myCompletions(context) {
-    let before = context.matchBefore(/\w+/)
-    if (!context.explicit && !before) return null
-    return {
-        from: before ? before.from : context.pos,
-        options: completions,
-        validFor: /^\w*$/
-    }
-}
+import { flatten } from "ramda";
 
 const initialState = {
     firstEditorInput: Buffer.from(defaultEditorsValue.firstDefault).toString("base64"),
@@ -34,16 +25,26 @@ const initialState = {
 
 function Editors({ isExample, example }) {
     const [sendValues, setSendValues] = useState(initialState)
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null); //probavly optional or will be handeled in a future
     const [isLoaded, setIsLoaded] = useState(false); //probavly optional or will be handeled in a future
     const [resValue, setResValue] = useState('');
     const [placeholderResValue, setPlaceholderResValue] = useState('');
     const [isDisabledOutput, setIsDisabledOutput] = useState(true)
     const [isErrorOutput, setIsErrorOutput] = useState(false)
     const [isOpenCard, setIsOpenCard] = useState(false)
+    const [completionsValue, setCompletionsValue] = useState([]);
     const invalidInput = sendValues.volume <= 0 || sendValues.volume >= 50
     const isButtonDisabled = invalidInput || isEmpty(sendValues.firstEditorInput) || isEmpty(sendValues.secondEditorInput) || isEmpty(sendValues.thirdEditorInput)
 
+    function myCompletions(context) {
+        let before = context.matchBefore(/\w+/)
+        if (!context.explicit && !before) return null
+        return {
+            from: before ? before.from : context.pos,
+            options: completionsValue,
+            validFor: /^\w*$/
+        }
+    }
     useEffect(() => {
         if (resValue === 'unsat' || resValue === 'bounded unsat') {
             setIsDisabledOutput(true)
@@ -63,7 +64,20 @@ function Editors({ isExample, example }) {
         }
     }, [resValue]);
 
+    const foundValues = (val) => {
+        var regex = /create_action\(\"(?<firstArg>.*?)\"(?:.*?)\[\s*(?<secondArg>.*?)\]/
+        var arrItemRegex = /\s*\"(?:.*?)\"\s*\,\s*\"(.*?)\"\s*/
+        var matchResult = val.match(regex)
+        var arg1 = matchResult?.groups.firstArg
+        var arrArgs = matchResult?.groups.secondArg.split(/(?:\))\s*\,\s*\(/).map(item => item.match(arrItemRegex)?.[1])
+        return [arg1, arrArgs]
+    }
+
     const handleFirstEditorChange = (value, event) => {
+        var splitedInput = value.split('\n')
+        var mappedInput = flatten(splitedInput.map(item => foundValues(item)))
+        var completionsObj = mappedInput.map(item => item && { 'label': item, "type": "constant" }).filter(Boolean)
+        setCompletionsValue(completionsObj)
         setSendValues({ ...sendValues, firstEditorInput: Buffer.from(value).toString("base64") })
     }
 

@@ -3,12 +3,3 @@ export const defaultEditorsValue = {
     secondDefault: "print(Hello world)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
     thirdDefault: "option to do\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 }
-
-export const completions = [
-    { label: "health", type: "keyword" },
-    { label: "home", type: "keyword" },
-    { label: "care", type: "constant", info: "Test completion" },
-    { label: "cat", type: "constant", info: "Test completion" },
-    { label: "rule", type: "constant", info: "Test completion" },
-    { label: "software", type: "variable" },
-]
