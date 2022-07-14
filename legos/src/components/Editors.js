@@ -7,7 +7,7 @@ import axios from "axios";
 import { Buffer } from 'buffer';
 import { isEmpty } from "../../node_modules/ramda/src/index";
 import { OptionsBar, Output } from './ComponentMap';
-import { defaultEditorsValue } from "./constants";
+import { defaultCompletions, defaultEditorsValue } from "./constants";
 import { sublime } from '@uiw/codemirror-theme-sublime';
 import { languages } from '@codemirror/language-data';
 import { python } from '@codemirror/lang-python';
@@ -22,7 +22,6 @@ const initialState = {
     volume: 1,
 };
 
-
 function Editors({ isExample, example }) {
     const [sendValues, setSendValues] = useState(initialState)
     const [error, setError] = useState(null); //probavly optional or will be handeled in a future
@@ -32,7 +31,7 @@ function Editors({ isExample, example }) {
     const [isDisabledOutput, setIsDisabledOutput] = useState(true)
     const [isErrorOutput, setIsErrorOutput] = useState(false)
     const [isOpenCard, setIsOpenCard] = useState(false)
-    const [completionsValue, setCompletionsValue] = useState([]);
+    const [completionsValue, setCompletionsValue] = useState(defaultCompletions);
     const invalidInput = sendValues.volume <= 0 || sendValues.volume >= 50
     const isButtonDisabled = invalidInput || isEmpty(sendValues.firstEditorInput) || isEmpty(sendValues.secondEditorInput) || isEmpty(sendValues.thirdEditorInput)
 
@@ -65,19 +64,24 @@ function Editors({ isExample, example }) {
     }, [resValue]);
 
     const foundValues = (val) => {
-        var regex = /create_action\(\"(?<firstArg>.*?)\"(?:.*?)\[\s*(?<secondArg>.*?)\]/
+        var regexAction = /create_action\(\"(?<firstArg>.*?)\"(?:.*?)\[\s*(?<secondArg>.*?)\]/
+        var regexType = /create_type\(\"(?<firstArg>.*?)\"(?:.*?)\[\s*(?<secondArg>.*?)\]/
+        var regexPairAction = /create_pair_action\(\"(?<firstArg>.*?)\"(?:.*?)\[\s*(?<secondArg>.*?)\]/
         var arrItemRegex = /\s*\"(?:.*?)\"\s*\,\s*\"(.*?)\"\s*/
-        var matchResult = val.match(regex)
-        var arg1 = matchResult?.groups.firstArg
+        var matchResult = val.match(regexAction) || val.match(regexType) || val.match(regexPairAction)
+        var arg = matchResult?.groups.firstArg
         var arrArgs = matchResult?.groups.secondArg.split(/(?:\))\s*\,\s*\(/).map(item => item.match(arrItemRegex)?.[1])
-        return [arg1, arrArgs]
+        if (arg, arrArgs) {
+            return { arg, arrArgs }
+        }
+        return
     }
 
     const handleFirstEditorChange = (value, event) => {
         var splitedInput = value.split('\n')
         var mappedInput = flatten(splitedInput.map(item => foundValues(item)))
-        var completionsObj = mappedInput.map(item => item && { 'label': item, "type": "constant" }).filter(Boolean)
-        setCompletionsValue(completionsObj)
+        var completionsObjRes = mappedInput.map(item => item && { 'label': item.arg, "type": "constant", "info": `${item.arg + '(' + item.arrArgs.toString() + ')'}` }).filter(Boolean)
+        setCompletionsValue(defaultCompletions.concat(completionsObjRes))
         setSendValues({ ...sendValues, firstEditorInput: Buffer.from(value).toString("base64") })
     }
 
@@ -114,7 +118,6 @@ function Editors({ isExample, example }) {
                 <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
                     <GridItem w='80%' borderWidth='1px' ml={10}>
                         <CodeMirror
-                            // readOnly="true"
                             value={example.firstEditorInput}
                             height="40vh"
                             extensions={[
@@ -139,7 +142,6 @@ function Editors({ isExample, example }) {
                     </GridItem>
                     <GridItem w='90%' borderWidth='1px' >
                         <CodeMirror
-                            // readOnly="true"
                             value={example.secondEditorInput}
                             height="40vh"
                             extensions={[
@@ -163,7 +165,6 @@ function Editors({ isExample, example }) {
                         /></GridItem>
                     <GridItem w='90%' borderWidth='1px' >
                         <CodeMirror
-                            // readOnly="true"
                             value={example.thirdEditorInput}
                             height="40vh"
                             extensions={[
