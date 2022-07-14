@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Heading, Flex, Divider, Text } from '@chakra-ui/react';
+import { Box, Flex, Divider, Text, Spacer } from '@chakra-ui/react';
 
-import { Footer, Header } from './ComponentMap';
+import { Footer, Header, MenuDropdown } from './ComponentMap';
 
 const Layout = ({
-    children
+    children, setIsExample
 }) => {
     return (
         <>
@@ -24,20 +24,23 @@ const Layout = ({
                         width="100%"
                         pl={15}
                         pr={15}>
-                        {/* <Flex alignItems="center"> */}
-                        <Box w="230px" borderColor="secondary.light.60" borderStyle="solid" borderBottomWidth="4px" ml={10}>
-                            <Text
-                                marginTop="40px"
-                                marginBottom="10px"
-                                fontSize="1.5rem"
-                                as="h2"
-                                ml={10}
-                                fontWeight="bold"
-                            >
-                                Auto Compiler
-                            </Text>
-                        </Box>
-                        {/* </Flex> */}
+                        <Flex flexDir="row">
+                            <Box w="176px" borderColor="secondary.light.30" borderStyle="solid" borderBottomWidth="4px" ml="90px">
+                                <Text
+                                    marginTop="40px"
+                                    marginBottom="10px"
+                                    fontSize="1.5rem"
+                                    as="h2"
+                                    fontWeight="bold"
+                                >
+                                    Legos Checker
+                                </Text>
+                            </Box>
+                            <Spacer></Spacer>
+                            <Box w="110px" mr="100px" mt="30px"  >
+                                <MenuDropdown setIsExample={setIsExample}/>
+                            </Box>
+                        </Flex>
                         {children?.content ? children.content : children}
                     </Flex>
                 </Box>

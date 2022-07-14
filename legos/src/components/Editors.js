@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { GridItem, Grid, Box, VStack, StackDivider, Input } from '@chakra-ui/react';
-import Editor from "@monaco-editor/react";
-import { isEmpty } from "../../node_modules/ramda/src/index";
+import PropTypes from 'prop-types';
+import CodeMirror from '@uiw/react-codemirror';
+import { autocompletion } from "@codemirror/autocomplete"
+import { GridItem, Grid, Box } from '@chakra-ui/react';
 import axios from "axios";
-
+import { Buffer } from 'buffer';
+import { isEmpty } from "../../node_modules/ramda/src/index";
 import { OptionsBar, Output } from './ComponentMap';
 import { defaultEditorsValue } from "./constants";
-import { Buffer } from 'buffer';
+import { sublime } from '@uiw/codemirror-theme-sublime';
+import { languages } from '@codemirror/language-data';
+import { python } from '@codemirror/lang-python';
+import { flatten } from "ramda";
 
 const initialState = {
     firstEditorInput: Buffer.from(defaultEditorsValue.firstDefault).toString("base64"),
@@ -17,29 +22,62 @@ const initialState = {
     volume: 1,
 };
 
-function Editors() {
+
+function Editors({ isExample, example }) {
     const [sendValues, setSendValues] = useState(initialState)
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null); //probavly optional or will be handeled in a future
     const [isLoaded, setIsLoaded] = useState(false); //probavly optional or will be handeled in a future
     const [resValue, setResValue] = useState('');
+    const [placeholderResValue, setPlaceholderResValue] = useState('');
     const [isDisabledOutput, setIsDisabledOutput] = useState(true)
     const [isErrorOutput, setIsErrorOutput] = useState(false)
     const [isOpenCard, setIsOpenCard] = useState(false)
+    const [completionsValue, setCompletionsValue] = useState([]);
     const invalidInput = sendValues.volume <= 0 || sendValues.volume >= 50
     const isButtonDisabled = invalidInput || isEmpty(sendValues.firstEditorInput) || isEmpty(sendValues.secondEditorInput) || isEmpty(sendValues.thirdEditorInput)
 
+    function myCompletions(context) {
+        let before = context.matchBefore(/\w+/)
+        if (!context.explicit && !before) return null
+        return {
+            from: before ? before.from : context.pos,
+            options: completionsValue,
+            validFor: /^\w*$/
+        }
+    }
     useEffect(() => {
         if (resValue === 'unsat' || resValue === 'bounded unsat') {
             setIsDisabledOutput(true)
+            setIsErrorOutput(false)
+            if (resValue === 'unsat') setPlaceholderResValue('unsat')
+            if (resValue === 'bounded unsat') setPlaceholderResValue('bounded unsat')
         }
-        if (error) {
+        if (resValue === 'ERROR') {
             setIsErrorOutput(true)
             setResValue('Please launch again')
+            setPlaceholderResValue('Please launch again')
         }
-        if (resValue.length > 10) { setIsDisabledOutput(false) }
+        if (resValue.length > 10 && resValue !== 'Please launch again') {
+            setIsDisabledOutput(false);
+            setIsErrorOutput(false)
+            setPlaceholderResValue('Please press to see output')
+        }
     }, [resValue]);
 
-    const handleFitstEditorChange = (value, event) => {
+    const foundValues = (val) => {
+        var regex = /create_action\(\"(?<firstArg>.*?)\"(?:.*?)\[\s*(?<secondArg>.*?)\]/
+        var arrItemRegex = /\s*\"(?:.*?)\"\s*\,\s*\"(.*?)\"\s*/
+        var matchResult = val.match(regex)
+        var arg1 = matchResult?.groups.firstArg
+        var arrArgs = matchResult?.groups.secondArg.split(/(?:\))\s*\,\s*\(/).map(item => item.match(arrItemRegex)?.[1])
+        return [arg1, arrArgs]
+    }
+
+    const handleFirstEditorChange = (value, event) => {
+        var splitedInput = value.split('\n')
+        var mappedInput = flatten(splitedInput.map(item => foundValues(item)))
+        var completionsObj = mappedInput.map(item => item && { 'label': item, "type": "constant" }).filter(Boolean)
+        setCompletionsValue(completionsObj)
         setSendValues({ ...sendValues, firstEditorInput: Buffer.from(value).toString("base64") })
     }
 
@@ -72,36 +110,166 @@ function Editors() {
 
     return (
         <Box>
-            <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
-                <GridItem w='90%' borderWidth='1px' ml={10}>
-                    <Editor
-                        height="40vh"
-                        defaultLanguage="python"
-                        automaticLayout="true"
-                        defaultValue={defaultEditorsValue.firstDefault}
-                        onChange={handleFitstEditorChange}
-                    /></GridItem>
-                <GridItem w='90%' borderWidth='1px' >
-                    <Editor
-                        height="40vh"
-                        defaultLanguage="python"
-                        automaticLayout="true"
-                        defaultValue={defaultEditorsValue.secondDefault}
-                        onChange={handleSecondEditorChange}
-                    /></GridItem>
-                <GridItem w='90%' borderWidth='1px' >
-                    <Editor
-                        height="40vh"
-                        defaultLanguage="python"
-                        automaticLayout="true"
-                        defaultValue={defaultEditorsValue.thirdDefault}
-                        onChange={handleThirdEditorChange}
-                    /></GridItem>
-            </Grid>
+            {isExample.isExampleBool && example ? (
+                <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
+                    <GridItem w='80%' borderWidth='1px' ml={10}>
+                        <CodeMirror
+                            // readOnly="true"
+                            value={example.firstEditorInput}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleFirstEditorChange}
+                        />
+                    </GridItem>
+                    <GridItem w='90%' borderWidth='1px' >
+                        <CodeMirror
+                            // readOnly="true"
+                            value={example.secondEditorInput}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleSecondEditorChange}
+                        /></GridItem>
+                    <GridItem w='90%' borderWidth='1px' >
+                        <CodeMirror
+                            // readOnly="true"
+                            value={example.thirdEditorInput}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            outline="none"
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleThirdEditorChange}
+                        /></GridItem>
+                </Grid>) :
+                (<Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
+                    <GridItem w='80%' borderWidth='1px' ml={10}>
+                        <CodeMirror
+                            value={defaultEditorsValue.firstDefault}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleFirstEditorChange}
+                        />
+                    </GridItem>
+                    <GridItem w='90%' borderWidth='1px' >
+                        <CodeMirror
+                            value={defaultEditorsValue.secondDefault}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleSecondEditorChange}
+                        /></GridItem>
+                    <GridItem w='90%' borderWidth='1px' >
+                        <CodeMirror
+                            value={defaultEditorsValue.thirdDefault}
+                            height="40vh"
+                            extensions={[
+                                autocompletion({ override: [myCompletions] }), python({ base: python, codeLanguages: languages })
+                            ]
+                            }
+                            options={{
+                                tabSize: 2,
+                                lint: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                spellcheck: true,
+                                autoCloseTags: true,
+                                autoCloseBrackets: true,
+                                matchTags: true,
+                                matchBrackets: true
+                            }}
+                            outline="none"
+                            theme={sublime}
+                            overflow="auto"
+                            onChange={handleThirdEditorChange}
+                        /></GridItem>
+                </Grid>)
+            }
             <OptionsBar setIsOpenCard={setIsOpenCard} setResValue={setResValue} setSendValues={setSendValues} sendValues={sendValues} sendRequest={sendRequest} invalidInput={invalidInput} isButtonDisabled={isButtonDisabled} />
-            <Output text={resValue} isDisabled={isDisabledOutput} isError={isErrorOutput} isOpenCard={isOpenCard} setIsOpenCard={setIsOpenCard} />
+            <Output text={resValue} placeholderResValue={placeholderResValue} isDisabled={isDisabledOutput} isError={isErrorOutput} isOpenCard={isOpenCard} setIsOpenCard={setIsOpenCard} />
         </Box>
     );
 }
+
+Editors.propTypes = {
+    isExample: PropTypes.object,
+    example: PropTypes.object,
+};
 
 export default Editors;

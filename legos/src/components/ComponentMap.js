@@ -11,6 +11,7 @@ const dynamicImports = {
     InputOption: dynamic(() => import('./InputOption')),
     Notification: dynamic(() => import('./Notification')),
     Output: dynamic(() => import('./Output')),
+    MenuDropdown:  dynamic(() => import('./MenuDropdown')),
 };
 
 export const {
@@ -23,5 +24,6 @@ export const {
     RadioOption,
     InputOption,
     Notification,
-    Output
+    Output,
+    MenuDropdown
 } = dynamicImports;
