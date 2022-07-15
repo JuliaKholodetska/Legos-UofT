@@ -13,11 +13,11 @@ function MenuDropdown({
             <MenuList>
                 <MenuItem onClick={() => setIsExample({
                     isExampleBool: true,
-                    type: 'hole'
+                    type: 'PHIM'
                 })}>
-                    Hole
+                    PHIM
                 </MenuItem>
-                <MenuItem onClick={() => setIsExample({
+                {/* <MenuItem onClick={() => setIsExample({
                     isExampleBool: true,
                     type: 'lambda'
                 })}>
@@ -28,8 +28,8 @@ function MenuDropdown({
                     type: 'let'
                 })}>
                     Let
-                </MenuItem>
-                <MenuDivider />
+                </MenuItem>*/}
+                <MenuDivider /> 
                 <MenuItem onClick={() => setIsExample({
                     isExampleBool: false,
                     type: 'editor'

@@ -116,7 +116,7 @@ function Editors({ isExample, example }) {
         <Box>
             {isExample.isExampleBool && example ? (
                 <Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
-                    <GridItem w='80%' borderWidth='1px' ml={10}>
+                    <GridItem w='80%' maxW="450px" borderWidth='1px' ml={10}>
                         <CodeMirror
                             value={example.firstEditorInput}
                             height="40vh"
@@ -140,7 +140,7 @@ function Editors({ isExample, example }) {
                             onChange={handleFirstEditorChange}
                         />
                     </GridItem>
-                    <GridItem w='90%' borderWidth='1px' >
+                    <GridItem w='90%'maxW="450px"  borderWidth='1px' >
                         <CodeMirror
                             value={example.secondEditorInput}
                             height="40vh"
@@ -163,7 +163,7 @@ function Editors({ isExample, example }) {
                             overflow="auto"
                             onChange={handleSecondEditorChange}
                         /></GridItem>
-                    <GridItem w='90%' borderWidth='1px' >
+                    <GridItem w='90%' maxW="450px" borderWidth='1px' >
                         <CodeMirror
                             value={example.thirdEditorInput}
                             height="40vh"
@@ -189,7 +189,7 @@ function Editors({ isExample, example }) {
                         /></GridItem>
                 </Grid>) :
                 (<Grid templateColumns='repeat(3, 1fr)' gap={1} mt={50} >
-                    <GridItem w='80%' borderWidth='1px' ml={10}>
+                    <GridItem w='80%' maxW="450px" borderWidth='1px' ml={10}>
                         <CodeMirror
                             value={defaultEditorsValue.firstDefault}
                             height="40vh"
@@ -213,7 +213,7 @@ function Editors({ isExample, example }) {
                             onChange={handleFirstEditorChange}
                         />
                     </GridItem>
-                    <GridItem w='90%' borderWidth='1px' >
+                    <GridItem w='90%' maxW="450px" borderWidth='1px' >
                         <CodeMirror
                             value={defaultEditorsValue.secondDefault}
                             height="40vh"
@@ -236,7 +236,7 @@ function Editors({ isExample, example }) {
                             overflow="auto"
                             onChange={handleSecondEditorChange}
                         /></GridItem>
-                    <GridItem w='90%' borderWidth='1px' >
+                    <GridItem w='90%' maxW="450px" borderWidth='1px' >
                         <CodeMirror
                             value={defaultEditorsValue.thirdDefault}
                             height="40vh"

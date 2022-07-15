@@ -10,7 +10,7 @@ const Header = () => {
             <Flex minWidth='max-content' alignItems='center' gap='2' h={24} bgColor="white"
                 p={{ base: 'layout.base', xl: 'layout.xl' }}>
                 <Spacer />
-                <Link>
+                <Link href='/compiler' >
                     <Image src={legosIcon} w={71} h={12} alt="Logo" mr={0} />
                 </Link>
             </Flex>

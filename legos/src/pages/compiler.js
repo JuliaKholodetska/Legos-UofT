@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Card, Editors, Layout } from '../components/ComponentMap';
+import { secondEditorPHIM, thirdEditorPHIM, firstEditorPHIM } from '../components/constants';
 
-const holeExampleState = {
-    firstEditorInput: 'hole1',
-    secondEditorInput: 'hole2',
-    thirdEditorInput: 'hole3'
+const PHIMExampleState = {
+    firstEditorInput: firstEditorPHIM,
+    secondEditorInput: secondEditorPHIM,
+    thirdEditorInput: thirdEditorPHIM
 };
 
 const lambdaExampleState = {
@@ -33,8 +34,8 @@ function Compiler() {
         if (isExample.type === 'let') {
             setExample(letExampleState)
         }
-        if (isExample.type === 'hole') {
-            setExample(holeExampleState)
+        if (isExample.type === 'PHIM') {
+            setExample(PHIMExampleState)
         }
         if (isExample.type === 'lambda') {
             setExample(lambdaExampleState)
